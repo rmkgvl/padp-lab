@@ -78,6 +78,7 @@ long ParallelSieve(long n)
     long m = (long)sqrt((double)n);
     long n_factor = 0;
     long *factor = new long[m];
+    cout<<m<<endl;
     t = omp_get_wtime();
 #pragma omp parallel
     {
@@ -92,7 +93,9 @@ long ParallelSieve(long n)
                     ++count;
                     Strike(composite, 2 * i, i, m);
                     factor[n_factor++] = i;
+                    cout<<factor[n_factor-1]<<" ";
                 }
+            cout<<endl;
         }
         long base = -1;
 #pragma omp for reduction(+: count)
@@ -104,14 +107,29 @@ long ParallelSieve(long n)
                 // Must compute striker from scratch.
                 base = window;
                 for (long k = 0; k < n_factor; ++k)
+                {
                     striker[k] = (base + factor[k] - 1) / factor[k] * factor[k]- base;
+                }
+                for(long k=0;k<n_factor;++k)
+                {
+                    cout<<striker[k]<<" ";
+                }
+                cout<<endl;
             }
             long limit = min(window + m - 1, n) - base;
             for (long k = 0; k < n_factor; ++k)
+            {
                 striker[k] = Strike(composite, striker[k], factor[k], limit) - m;
+            }
+            for(long k=0;k<n_factor;++k)
+                {
+                    cout<<striker[k]<<" ";
+                }
+            cout<<endl;
             for (long i = 0; i <= limit; ++i)
                 if (!composite[i])
                     ++count;
+            cout<<count<<endl;
             base += m;
         }
         delete[] striker;
@@ -124,10 +142,11 @@ long ParallelSieve(long n)
 
 int main()
 {
-    long countunfriendly = CacheUnfriendlySieve(100000000);
-    long countfriendly = CacheFriendlySieve(100000000);
-    cout << countunfriendly<<" ";
-    cout << "Time : " << t << endl;
-    cout << countfriendly << " ";
-    cout << "Time : " << t << endl;
+    //long countunfriendly = CacheUnfriendlySieve(100000000);
+    //long countfriendly = CacheFriendlySieve(100000000);
+    //cout << countunfriendly<<" ";
+    //cout << "Time : " << t << endl;
+    //cout << countfriendly << " ";
+    //cout << "Time : " << t << endl;
+    cout<<ParallelSieve(20)<<endl;
 }
