@@ -5,10 +5,12 @@
 int main()
 {
 
-	int row = 500, col = 500, i, j, count = 0, k, d, n;
+	int row , col , i, j, count = 0, k, d, n;
 
 	for (d = 500; d <= 1250; d = d + 250)
 	{
+		row = d;
+		col = d;
 		printf("%d x %d matrices\n", d, d);
 		int **arr1 = (int **)malloc(row * sizeof(int *));
 
