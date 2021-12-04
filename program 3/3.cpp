@@ -95,7 +95,7 @@ long ParallelSieve(long n)
                 }
         }
         long base = -1;
-#pragma omp for reduction(+ \ : count)
+#pragma omp for reduction(+: count)
         for (long window = m + 1; window <= n; window += m)
         {
             memset(composite, 0, m);
